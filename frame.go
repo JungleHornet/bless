@@ -117,13 +117,13 @@ func (b *Blessing) constructFrame() {
 		line = f + line + f
 		frame += line + "\n"
 	}
-	b.terminal.frame = strings.TrimSuffix(frame, string(10))
+	b.terminal.frame = strings.TrimSuffix(frame, "\n")
 }
 
 func (b *Blessing) runFrame() {
 	b.updateBlessingSize()
 	b.constructFrame()
-	fmt.Print(strings.Repeat(string(8), b.terminal.height*b.terminal.width))
+	fmt.Print(strings.Repeat("\b", b.terminal.height*b.terminal.width))
 	fmt.Print(b.terminal.frame)
-	fmt.Print(strings.Repeat(string(8), (b.terminal.width*2)-1))
+	fmt.Print(strings.Repeat("\b", (b.terminal.width*2)-1))
 }
