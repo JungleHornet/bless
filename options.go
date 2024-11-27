@@ -97,7 +97,16 @@ func (b *Blessing) HorizontalOptions(prompt string, options ...string) int {
 		}
 
 		optionStr, _ = b.constructOptions(options, option)
-		//optionStr = strings.Repeat(string(8), len(optionStr)) + optionStr
 		b.Overwrite(line, optionStr)
 	}
+}
+
+func (b *Blessing) VerticalOptions(prompt string, options ...string) int {
+	// TODO make vertical options function that uses up and down arrow keys
+	return 0
+}
+
+func (b *Blessing) MatrixOptions(prompt string, options ...string) int {
+	// TODO make matrix options function that uses up, down, left, and right arrow keys
+	return 0
 }
