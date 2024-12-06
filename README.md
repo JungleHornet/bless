@@ -1,5 +1,5 @@
 # bless
-A TUI library for go. Color is not included, but bless is compatible with https://github.com/fatih/color
+A TUI library for go. https://github.com/fatih/color is used for colored/formatted text.
 
 # Getting started
 Once you import and `go get github.com/junglehornet/bless` use bless.New() to create a new blessing. Parameters are in order as follows:
