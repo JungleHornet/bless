@@ -3,7 +3,12 @@ package bless
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
+
+	"github.com/lunixbochs/vtclean"
 )
+
+
 
 func (b *Blessing) Print(output ...any) int {
 	var outputStr string
@@ -60,9 +65,13 @@ func (b *Blessing) write(output string, startLine int) int {
 	return startLine - 1
 }
 
+func printableLen(str string) int {
+	return utf8.RuneCount([]byte(vtclean.Clean(str, false)))
+}
+
 func (b *Blessing) cleanTerminal() {
 	for i, each := range b.terminal.innerFrame {
-		if len(each) > b.terminal.width-3 {
+		if printableLen(each) > b.terminal.width-3 {
 			this := each[:b.terminal.width-3]
 			next := " " + each[b.terminal.width-3:]
 			b.terminal.innerFrame = append(append(b.terminal.innerFrame[:i], this, next), b.terminal.innerFrame[i+1:]...)
@@ -101,15 +110,15 @@ func (b *Blessing) getLine() int {
 
 func (b *Blessing) constructFrame() {
 	f := string(b.settings.frame)
-	frame := strings.Repeat(f, b.terminal.width-1)
+	frame := strings.Repeat(f, b.terminal.width)
 	for i := 0; i < (b.terminal.height - 1); i++ {
 		var line string
 		if i == b.terminal.height-2 {
 			line = strings.Repeat(f, b.terminal.width-2)
 		} else if len(b.terminal.innerFrame) > i {
 			line = " " + b.terminal.innerFrame[i]
-			if len(line) < b.terminal.width-2 {
-				line += strings.Repeat(" ", b.terminal.width-2-len(line))
+			if printableLen(line) < b.terminal.width-2 {
+				line += strings.Repeat(" ", b.terminal.width-2-printableLen(line))
 			}
 		} else {
 			line = strings.Repeat(" ", b.terminal.width-2)
@@ -120,10 +129,14 @@ func (b *Blessing) constructFrame() {
 	b.terminal.frame = strings.TrimSuffix(frame, "\n")
 }
 
-func (b *Blessing) runFrame() {
-	b.updateBlessingSize()
-	b.constructFrame()
+func (b *Blessing) printFrame() {
 	fmt.Print(strings.Repeat("\b", b.terminal.height*b.terminal.width))
 	fmt.Print(b.terminal.frame)
 	fmt.Print(strings.Repeat("\b", (b.terminal.width*2)-1))
+}
+
+func (b *Blessing) runFrame() {
+	b.updateBlessingSize()
+	b.constructFrame()
+	b.printFrame()
 }
