@@ -24,7 +24,7 @@ b.Println("Hello,")
 
 line := b.Print("World!") // Println and Print return line number where printing started
 
-b.Overwrite(line, "Gophers") // Overwrite takes a line number (int) as an argument and overwrites the line with new text
+b.Overwrite(line, "Gophers") // Overwrite takes a line number (int) and overwrites the line with new text
 
 b.Print("!\n this is a new line")
 
