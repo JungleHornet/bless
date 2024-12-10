@@ -8,8 +8,6 @@ import (
 	"github.com/lunixbochs/vtclean"
 )
 
-
-
 func (b *Blessing) Print(output ...any) int {
 	var outputStr string
 	for _, each := range output {
@@ -100,8 +98,12 @@ func (b *Blessing) Overwrite(startLine int, output ...any) {
 	b.runFrame()
 }
 
-func (b *Blessing) RmLine(line int) {
-	b.terminal.innerFrame = append(b.terminal.innerFrame[:line], b.terminal.innerFrame[line+1:]...)
+func (b *Blessing) RmLines(lines ...int) {
+	for i, x := range lines {
+		x = x - i
+		b.terminal.innerFrame = append(b.terminal.innerFrame[:x], b.terminal.innerFrame[x+1:]...)
+	}
+	b.runFrame()
 }
 
 func (b *Blessing) getLine() int {
@@ -110,7 +112,7 @@ func (b *Blessing) getLine() int {
 
 func (b *Blessing) constructFrame() {
 	f := string(b.settings.frame)
-	frame := strings.Repeat(f, b.terminal.width)
+	frame := strings.Repeat(f, b.terminal.width-1) + "\n"
 	for i := 0; i < (b.terminal.height - 1); i++ {
 		var line string
 		if i == b.terminal.height-2 {

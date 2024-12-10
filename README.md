@@ -36,6 +36,17 @@ Hello,
 Gophers!
 ```
 
+# Color
+
+Use https://github.com/fatih/color for inserting colored strings into the blessing.
+```
+red := color.New(color.FgRed).SprintFunc()
+b.Print(red("Red text, "))
+blue := color.New(color.FgBlue)
+b.Print(blue.Sprint("Blue text"))
+```
+
+
 # UI Functions:
 
 ### Options:
